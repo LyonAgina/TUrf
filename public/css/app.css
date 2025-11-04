@@ -1,0 +1,93 @@
+/* Custom styles for Turf Bila Worry */
+
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #fff;
+    color: #1e3d1e;
+}
+
+.navbar, .card, .dropdown-menu, .modal-content {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(30, 61, 30, 0.08);
+}
+
+.navbar-brand, .nav-link, .dropdown-item, .card-title {
+    color: #155d27 !important;
+}
+
+.turf-card {
+    border: 1px solid #155d27;
+    box-shadow: 0 2px 8px rgba(30, 61, 30, 0.08);
+    border-radius: 14px;
+    transition: box-shadow 0.2s;
+}
+.turf-card:hover {
+    box-shadow: 0 6px 24px rgba(30, 61, 30, 0.18);
+    border-color: #1e7e34;
+}
+
+.btn-primary, .btn-outline-primary {
+    background-color: #155d27;
+    border-color: #155d27;
+    color: #fff;
+}
+.btn-primary:hover, .btn-outline-primary:hover {
+    background-color: #1e7e34;
+    border-color: #1e7e34;
+    color: #fff;
+}
+
+.card-img-top, .img-fluid {
+    object-fit: cover;
+    width: 100%;
+    height: 200px;
+    border-radius: 12px 12px 0 0;
+}
+
+footer {
+    font-size: 0.95rem;
+    background: #155d27;
+    color: #fff;
+    padding: 1rem 0;
+}
+
+@media (max-width: 768px) {
+    .navbar-nav { text-align: center; }
+    .card-img-top, .img-fluid { height: 150px; }
+}
+
+.logo {
+    height: 40px;
+}
+
+.card-img-top, .img-fluid {
+    object-fit: cover;
+    width: 100%;
+    height: 200px;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .navbar-nav { text-align: center; }
+    .card-img-top, .img-fluid { height: 150px; }
+}
+
+footer {
+    font-size: 0.95rem;
+}
+
+.btn-primary {
+    background-color: #1e7e34;
+    border-color: #1e7e34;
+}
+
+.btn-primary:hover {
+    background-color: #155d27;
+    border-color: #155d27;
+}
