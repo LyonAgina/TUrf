@@ -54,6 +54,71 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
+## Collaborator Setup: Database & Project
+
+This is a Laravel project. To get started, collaborators should follow these steps:
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/LyonAgina/Turf-Bila-Worry.git
+cd Turf-Bila-Worry
+```
+
+### 2. Install Dependencies
+```bash
+composer install
+npm install && npm run build
+```
+
+### 3. Copy the Environment File
+Copy `.env.example` to `.env` and update the database credentials:
+```bash
+cp .env.example .env
+```
+Edit `.env` and set your database connection details:
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_db_name
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
+```
+
+### 4. Generate Application Key
+```bash
+php artisan key:generate
+```
+
+### 5. Run Migrations
+This will create all necessary tables in your database:
+```bash
+php artisan migrate
+```
+
+### 6. (Optional) Seed the Database
+If you have seeders, run:
+```bash
+php artisan db:seed
+```
+
+### 7. Start the Development Server
+```bash
+php artisan serve
+```
+
+## Notes for Database Setup
+- Each collaborator should create a local MySQL (or compatible) database and update their `.env` file accordingly.
+- The migrations will set up all required tables and relationships.
+- If you need sample data, ask the repo owner to provide seeders or a sample SQL dump.
+
+## Troubleshooting
+- If you get SQL errors, check your `.env` database settings and make sure MySQL is running.
+- If you change the schema, run `php artisan migrate:fresh` to reset your database.
+
+## Contact
+For help, open an issue or contact the repo owner.
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
