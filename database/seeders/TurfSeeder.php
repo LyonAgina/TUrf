@@ -12,6 +12,6 @@ class TurfSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\Turf::factory(5)->create();
     }
 }

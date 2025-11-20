@@ -18,7 +18,7 @@ return new class extends Migration
             $table->dateTime('endTime');
             $table->string('status');
             $table->timestamps();
-            $table->foreign('turfID')->references('turfID')->on('turfs')->onDelete('cascade');
+            $table->foreign('turfID')->references('id')->on('turfs')->onDelete('cascade');
         });
     }
 

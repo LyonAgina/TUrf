@@ -17,7 +17,10 @@ class NotificationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'userID' => \App\Models\User::factory(),
+            'message' => $this->faker->sentence(12),
+            'isRead' => $this->faker->boolean,
+            'dateSent' => $this->faker->dateTimeBetween('-1 month', 'now'),
         ];
     }
 }

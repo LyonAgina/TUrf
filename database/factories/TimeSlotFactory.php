@@ -16,8 +16,13 @@ class TimeSlotFactory extends Factory
      */
     public function definition(): array
     {
+        $start = $this->faker->dateTimeBetween('+1 days', '+2 days');
+        $end = (clone $start)->modify('+2 hours');
         return [
-            //
+            'turfID' => \App\Models\Turf::factory(),
+            'startTime' => $start,
+            'endTime' => $end,
+            'status' => $this->faker->randomElement(['available', 'booked', 'unavailable']),
         ];
     }
 }

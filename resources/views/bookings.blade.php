@@ -24,11 +24,11 @@
                         <div class="card mb-3 turf-card w-100 mx-auto shadow-sm" style="border-radius:14px;overflow:hidden;">
                             <div class="row g-0 align-items-center">
                                 <div class="col-md-4">
-                                    <img src="{{ asset('images/arena1.jpg') }}" class="img-fluid rounded-start" alt="{{ $booking->turf->name ?? 'Arena' }}" style="height:120px;object-fit:cover;">
+                                    <img src="{{ asset('images/arena1.jpg') }}" class="img-fluid rounded-start" alt="{{ $booking->turf->name ?? 'Turf' }}" style="height:120px;object-fit:cover;">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body text-start">
-                                        <h5 class="card-title mb-2" style="color:#155d27;font-weight:700;">{{ $booking->turf->name ?? 'Arena' }}</h5>
+                                        <h5 class="card-title mb-2" style="color:#155d27;font-weight:700;">{{ $booking->turf->name ?? 'Turf' }}</h5>
                                         <p class="card-text mb-2" style="color:#1e3d1e;">
                                             <i class="bi bi-geo-alt-fill me-1"></i> {{ $booking->turf->location ?? 'N/A' }}<br>
                                             <span style="color:#1e3d1e;">Date:</span> {{ \Carbon\Carbon::parse($booking->startTime)->format('Y-m-d') }}<br>
@@ -49,11 +49,11 @@
                         <div class="card mb-3 turf-card w-100 mx-auto shadow-sm" style="border-radius:14px;overflow:hidden;opacity:0.85;">
                             <div class="row g-0 align-items-center">
                                 <div class="col-md-4">
-                                    <img src="{{ asset('images/arena1.jpg') }}" class="img-fluid rounded-start" alt="{{ $booking->turf->name ?? 'Arena' }}" style="height:120px;object-fit:cover;filter:grayscale(0.5);">
+                                    <img src="{{ asset('images/arena1.jpg') }}" class="img-fluid rounded-start" alt="{{ $booking->turf->name ?? 'Turf' }}" style="height:120px;object-fit:cover;filter:grayscale(0.5);">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body text-start">
-                                        <h5 class="card-title mb-2" style="color:#155d27;font-weight:700;">{{ $booking->turf->name ?? 'Arena' }}</h5>
+                                        <h5 class="card-title mb-2" style="color:#155d27;font-weight:700;">{{ $booking->turf->name ?? 'Turf' }}</h5>
                                         <p class="card-text mb-2" style="color:#1e3d1e;">
                                             <i class="bi bi-geo-alt-fill me-1"></i> {{ $booking->turf->location ?? 'N/A' }}<br>
                                             <span style="color:#1e3d1e;">Date:</span> {{ \Carbon\Carbon::parse($booking->startTime)->format('Y-m-d') }}<br>
@@ -74,11 +74,11 @@
                         <div class="card mb-3 turf-card w-100 mx-auto shadow-sm" style="border-radius:14px;overflow:hidden;opacity:0.7;">
                             <div class="row g-0 align-items-center">
                                 <div class="col-md-4">
-                                    <img src="{{ asset('images/arena1.jpg') }}" class="img-fluid rounded-start" alt="{{ $booking->turf->name ?? 'Arena' }}" style="height:120px;object-fit:cover;filter:grayscale(1);">
+                                    <img src="{{ asset('images/arena1.jpg') }}" class="img-fluid rounded-start" alt="{{ $booking->turf->name ?? 'Turf' }}" style="height:120px;object-fit:cover;filter:grayscale(1);">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body text-start">
-                                        <h5 class="card-title mb-2" style="color:#155d27;font-weight:700;">{{ $booking->turf->name ?? 'Arena' }}</h5>
+                                        <h5 class="card-title mb-2" style="color:#155d27;font-weight:700;">{{ $booking->turf->name ?? 'Turf' }}</h5>
                                         <p class="card-text mb-2" style="color:#1e3d1e;">
                                             <i class="bi bi-geo-alt-fill me-1"></i> {{ $booking->turf->location ?? 'N/A' }}<br>
                                             <span style="color:#1e3d1e;">Date:</span> {{ \Carbon\Carbon::parse($booking->startTime)->format('Y-m-d') }}<br>

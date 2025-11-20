@@ -12,6 +12,6 @@ class SupportTicketSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\SupportTicket::factory(5)->create();
     }
 }

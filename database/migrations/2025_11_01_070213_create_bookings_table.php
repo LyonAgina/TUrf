@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id('bookingID');
+            $table->id();
             $table->unsignedBigInteger('playerID');
             $table->unsignedBigInteger('turfID');
             $table->unsignedBigInteger('slotID');
@@ -21,9 +21,9 @@ return new class extends Migration
             $table->decimal('totalCost', 10, 2);
             $table->string('status');
             $table->timestamps();
-            $table->foreign('playerID')->references('userID')->on('users')->onDelete('cascade');
-            $table->foreign('turfID')->references('turfID')->on('turfs')->onDelete('cascade');
-            $table->foreign('slotID')->references('slotID')->on('time_slots')->onDelete('cascade');
+            $table->foreign('playerID')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('turfID')->references('id')->on('turfs')->onDelete('cascade');
+            $table->foreign('slotID')->references('id')->on('time_slots')->onDelete('cascade');
         });
     }
 

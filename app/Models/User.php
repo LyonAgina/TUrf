@@ -17,7 +17,7 @@ class User extends Authenticatable
      *
      * @var string
      */
-    protected $primaryKey = 'userID';
+    protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'int';
 

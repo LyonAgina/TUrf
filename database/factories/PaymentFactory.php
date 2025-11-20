@@ -17,7 +17,11 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'bookingID' => \App\Models\Booking::factory(),
+            'amount' => $this->faker->randomFloat(2, 1000, 10000),
+            'paymentDate' => $this->faker->dateTimeBetween('-1 month', 'now'),
+            'status' => $this->faker->randomElement(['paid', 'pending', 'failed']),
+            'transactionCode' => strtoupper($this->faker->bothify('??##??##??')),
         ];
     }
 }

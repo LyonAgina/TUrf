@@ -17,7 +17,11 @@ class TurfFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->company . ' Turf',
+            'description' => $this->faker->sentence(10),
+            'pricePerHour' => $this->faker->randomFloat(2, 500, 5000),
+            'ownerID' => \App\Models\User::factory(),
+            'locationID' => \App\Models\Location::factory(),
         ];
     }
 }

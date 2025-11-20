@@ -17,7 +17,11 @@ class ReviewFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'turfID' => \App\Models\Turf::factory(),
+            'userID' => \App\Models\User::factory(),
+            'rating' => $this->faker->numberBetween(1, 5),
+            'comment' => $this->faker->sentence(15),
+            'datePosted' => $this->faker->dateTimeBetween('-1 month', 'now'),
         ];
     }
 }

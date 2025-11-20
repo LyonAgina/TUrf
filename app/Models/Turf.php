@@ -14,4 +14,9 @@ class Turf extends Model
     {
         return $this->hasMany(Booking::class, 'turfID', 'turfID');
     }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'locationID');
+    }
 }

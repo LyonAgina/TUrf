@@ -12,6 +12,6 @@ class PayoutSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\Payout::factory(5)->create();
     }
 }

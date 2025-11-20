@@ -19,8 +19,8 @@ return new class extends Migration
             $table->text('comment')->nullable();
             $table->dateTime('datePosted');
             $table->timestamps();
-            $table->foreign('turfID')->references('turfID')->on('turfs')->onDelete('cascade');
-            $table->foreign('userID')->references('userID')->on('users')->onDelete('cascade');
+            $table->foreign('turfID')->references('id')->on('turfs')->onDelete('cascade');
+            $table->foreign('userID')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

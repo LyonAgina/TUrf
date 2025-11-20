@@ -1,3 +1,89 @@
+# Setting Up a New Laravel Project for Team Distribution
+
+## 1. Create a New Laravel Project
+
+Each collaborator should set up a fresh Laravel project to show their individual contributions:
+
+```bash
+composer create-project laravel/laravel your-project-name
+cd your-project-name
+```
+
+## 2. Initialize Git and Connect to New Repo
+
+```bash
+git init
+git remote add origin https://github.com/yourusername/your-new-repo.git
+git branch -M main
+```
+
+## 3. Install Node Dependencies
+
+```bash
+npm install && npm run build
+```
+
+## 4. Set Up Environment File
+
+Copy the example environment file and update it:
+```bash
+cp .env.example .env
+```
+Edit `.env` and set your database credentials:
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_db_name
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
+```
+
+## 5. Create the Database
+
+Create a new MySQL database matching your `.env` settings:
+```sql
+CREATE DATABASE your_db_name;
+```
+
+## 6. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+## 7. Add Your Feature Files
+
+Each collaborator should add only their assigned files (controllers, models, views, migrations, seeders, tests, etc.) to the new project, commit, and push. This will show individual contributions in the git history.
+
+## 8. Run Migrations
+
+```bash
+php artisan migrate
+```
+
+## 9. (Optional) Seed the Database
+
+If you have seeders, run:
+```bash
+php artisan db:seed
+```
+
+## 10. Start the Development Server
+
+```bash
+php artisan serve
+```
+
+## 11. Push Your Work
+
+- Add, commit, and push only your assigned files.
+- Use feature branches for each major part (e.g., `feature/auth-backend`, `feature/ui-frontend`, `feature/testing`).
+- Open a pull request for review and merging.
+
+---
+
+**This process ensures each team member’s contribution is visible in the git commit history and meets the rubric requirements for distributed work.**
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -54,69 +140,107 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## Collaborator Setup: Database & Project
 
-This is a Laravel project. To get started, collaborators should follow these steps:
+# Turf Bila Worry – Team Setup & Work Distribution
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/LyonAgina/Turf-Bila-Worry.git
-cd Turf-Bila-Worry
-```
+## 1. Project Setup (All Collaborators)
+- Clone the new repository.
+- Copy all files from the current project into the new repo folder.
+- Run:
+	```bash
+	composer install
+	npm install && npm run build
+	cp .env.example .env
+	php artisan key:generate
+	```
+- Update `.env` with your local database credentials:
+	```
+	DB_CONNECTION=mysql
+	DB_HOST=127.0.0.1
+	DB_PORT=3306
+	DB_DATABASE=your_db_name
+	DB_USERNAME=your_db_user
+	DB_PASSWORD=your_db_password
+	```
+- Create a local MySQL database with the name you set above.
+- Run migrations:
+	```bash
+	php artisan migrate
+	```
+- (Optional) Seed the database:
+	```bash
+	php artisan db:seed
+	```
+- Start the server:
+	```bash
+	php artisan serve
+	```
 
-### 2. Install Dependencies
-```bash
-composer install
-npm install && npm run build
-```
+## 2. Work Distribution & File Responsibilities
 
-### 3. Copy the Environment File
-Copy `.env.example` to `.env` and update the database credentials:
-```bash
-cp .env.example .env
-```
-Edit `.env` and set your database connection details:
-```
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=your_db_name
-DB_USERNAME=your_db_user
-DB_PASSWORD=your_db_password
-```
+### Mitchell & Yvonne – Backend Development
+- **User Authentication:**  
+	Files: `app/Http/Controllers/Auth/`, `resources/views/auth/`, `app/Models/User.php`, `database/migrations/*users*`
+- **Booking Flow:**  
+	Files: `app/Http/Controllers/BookingController.php`, `app/Models/Booking.php`, `database/migrations/*bookings*`, `resources/views/bookings.blade.php`
+- **Payment Integration (Mobile Money):**  
+	Files: `app/Http/Controllers/PaymentController.php`, `app/Models/Payment.php`, `database/migrations/*payments*`, `resources/views/payments.blade.php`
+- **Push:** All backend logic, migrations, and related Blade views.
 
-### 4. Generate Application Key
-```bash
-php artisan key:generate
-```
+### Mahir & Kisiwani – Frontend Development
+- **UI/UX for Web:**  
+	Files: `resources/views/home.blade.php`, `resources/views/turfs.blade.php`, `resources/views/layouts/`, `public/css/app.css`, `resources/js/app.js`
+- **Search / Listing / Availability Display:**  
+	Files: `app/Http/Controllers/TurfController.php`, `app/Models/Turf.php`, `resources/views/turfs.blade.php`
+- **Push:** All frontend Blade views, CSS, JS, and UI components.
 
-### 5. Run Migrations
-This will create all necessary tables in your database:
-```bash
-php artisan migrate
-```
+### Lyon – Testing, Database, Deployment
+- **Unit Testing & Usability Testing:**  
+	Files: `tests/Unit/`, `tests/Feature/`, `phpunit.xml`
+- **Database Integration:**  
+	Files: `database/migrations/`, `database/seeders/`, `app/Models/`
+- **Performance & Reliability:**  
+	Files: `config/`, `app/Providers/`
+- **Deployment & Maintenance Plan:**  
+	Files: `README.md` (add deployment steps), `public/.htaccess`, `artisan`, `composer.json`, `package.json`
+- **Push:** All test files, seeders, deployment scripts, and documentation.
 
-### 6. (Optional) Seed the Database
-If you have seeders, run:
-```bash
-php artisan db:seed
-```
+## 3. Rubric Coverage Checklist
 
-### 7. Start the Development Server
-```bash
-php artisan serve
-```
+- **Laravel Setup:**  
+	`.env.example`, `.env`, `composer.json`, `package.json`, `artisan`, `config/`
+- **GitHub Collaboration:**  
+	Commit regularly, use descriptive messages, create feature branches for each major part.
+- **Database Design:**  
+	All migration files, seeders, relationships in models.
+- **CRUD Operations:**  
+	Controllers and Blade views for create, read, update, delete.
+- **Core Models & Logic:**  
+	All model files in `app/Models/`, business logic in controllers.
+- **UI/UX:**  
+	All Blade views, CSS, JS.
+- **Authentication & Authorization:**  
+	Auth controllers, middleware, user roles in models and migrations.
+- **Bonus Features:**  
+	Any extra functionality (e.g., notifications, reviews, support tickets).
 
-## Notes for Database Setup
-- Each collaborator should create a local MySQL (or compatible) database and update their `.env` file accordingly.
-- The migrations will set up all required tables and relationships.
-- If you need sample data, ask the repo owner to provide seeders or a sample SQL dump.
+## 4. How to Push Your Work
 
-## Troubleshooting
-- If you get SQL errors, check your `.env` database settings and make sure MySQL is running.
-- If you change the schema, run `php artisan migrate:fresh` to reset your database.
+- Only push the files you are responsible for (see above).
+- Use feature branches named after your task (e.g., `feature/auth-backend`, `feature/ui-frontend`, `feature/testing`).
+- Make regular, meaningful commits with clear messages.
+- After finishing your part, open a pull request for review.
 
-## Contact
+## 5. Presentation Prep
+
+- Test your setup and database before demo.
+- Make sure your branch is merged and up-to-date.
+- Be ready to explain your files and contributions.
+
+---
+
+**Each team member should copy only their assigned files into the new repo, commit, and push. This ensures clear ownership and meets the rubric requirements.**
+
 For help, open an issue or contact the repo owner.
 
 ## License

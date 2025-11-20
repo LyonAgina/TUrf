@@ -12,6 +12,6 @@ class ArenaSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\Arena::factory(5)->create();
     }
 }

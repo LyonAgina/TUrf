@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('turfs', function (Blueprint $table) {
-            $table->id('turfID');
+            $table->id();
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('pricePerHour', 10, 2);
             $table->unsignedBigInteger('ownerID')->nullable();
             $table->unsignedBigInteger('locationID')->nullable();
             $table->timestamps();
-            $table->foreign('ownerID')->references('userID')->on('users')->onDelete('set null');
-            $table->foreign('locationID')->references('locationID')->on('locations')->onDelete('set null');
+            $table->foreign('ownerID')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('locationID')->references('id')->on('locations')->onDelete('set null');
         });
     }
 

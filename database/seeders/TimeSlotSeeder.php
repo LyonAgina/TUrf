@@ -12,6 +12,6 @@ class TimeSlotSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\TimeSlot::factory(20)->create();
     }
 }

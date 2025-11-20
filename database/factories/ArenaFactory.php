@@ -17,7 +17,9 @@ class ArenaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->company . ' Arena',
+            'location' => $this->faker->city,
+            'capacity' => $this->faker->numberBetween(50, 500),
         ];
     }
 }

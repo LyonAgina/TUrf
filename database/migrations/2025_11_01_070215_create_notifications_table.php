@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->id('notificationID');
+            $table->id();
             $table->unsignedBigInteger('userID');
             $table->text('message');
             $table->boolean('isRead')->default(false);
             $table->dateTime('dateSent');
             $table->timestamps();
-            $table->foreign('userID')->references('userID')->on('users')->onDelete('cascade');
+            $table->foreign('userID')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
