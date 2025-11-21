@@ -20,6 +20,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/turfs', [TurfController::class, 'index'])->name('turfs');
 Route::get('/bookings', [BookingController::class, 'index'])->name('bookings');
+Route::get('/bookings/create', [BookingController::class, 'create'])->name('bookings.create');
+Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 require __DIR__.'/auth.php';
