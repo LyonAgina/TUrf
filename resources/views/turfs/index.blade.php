@@ -145,7 +145,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       @forelse($turfs as $turf)
         <div class="group relative bg-white rounded-2xl shadow-md hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300 overflow-hidden">
           <div class="relative h-64 overflow-hidden bg-gray-200">
@@ -211,13 +211,35 @@
                   Book Now
                 </a>
                 @can('delete', $turf)
-                  <form method="POST" action="{{ route('turfs.destroy', $turf->id) }}" onsubmit="return confirm('Are you sure you want to delete this turf?');">
+                  <form method="POST" action="{{ route('turfs.destroy', $turf->id) }}" class="inline-block turf-delete-form">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl transition-transform duration-300">
+                    <button type="button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl transition-transform duration-300 turf-delete-btn">
                       Delete
                     </button>
+                    <span class="hidden turf-delete-confirm bg-white border border-red-400 text-red-700 px-3 py-2 rounded-xl shadow-lg absolute z-10 mt-2">
+                      Confirm delete?
+                      <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded-lg ml-2 font-bold">Yes</button>
+                      <button type="button" class="bg-gray-300 text-gray-700 px-3 py-1 rounded-lg ml-2 font-bold turf-cancel-btn">No</button>
+                    </span>
                   </form>
+                  <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                      document.querySelectorAll('.turf-delete-btn').forEach(function(btn) {
+                        btn.addEventListener('click', function(e) {
+                          var form = btn.closest('.turf-delete-form');
+                          var confirmBox = form.querySelector('.turf-delete-confirm');
+                          confirmBox.classList.remove('hidden');
+                        });
+                      });
+                      document.querySelectorAll('.turf-cancel-btn').forEach(function(btn) {
+                        btn.addEventListener('click', function(e) {
+                          var confirmBox = btn.closest('.turf-delete-confirm');
+                          confirmBox.classList.add('hidden');
+                        });
+                      });
+                    });
+                  </script>
                 @endcan
               </div>
             </div>
