@@ -73,7 +73,7 @@
             msg.style.opacity = '0.2';
             setTimeout(function() { msg.style.display = 'none'; }, 1000);
           }
-        }, 10000);
+        }, 5000);
       </script>
       {{-- List bookings here --}}
       <div class="w-full pb-4">
@@ -98,7 +98,7 @@
                 <div class="flex items-center gap-2 mt-2">
                   @if($booking->status === 'upcoming')
                     <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">Upcoming</span>
-                    <form method="POST" action="{{ route('bookings.turfDelete', $booking->id) }}" onsubmit="return confirm('Are you sure you want to delete this turf and refund your booking?');">
+                    <form method="POST" action="{{ route('bookings.turfDelete', $booking->id) }}">
                       @csrf
                       @method('DELETE')
                       <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold px-3 py-1 rounded-full text-xs ml-2">Delete Turf & Refund</button>
