@@ -1,85 +1,202 @@
-# Setting Up a New Laravel Project for Team Distribution
 
-## 1. Create a New Laravel Project
+# Turf Bila Worry – Team Setup & Work Distribution
 
-Each collaborator should set up a fresh Laravel project to show their individual contributions:
+## 1. Project Setup (All Collaborators)
+- Clone the new repository.
+- Copy all files from the current project into the new repo folder.
+- Run:
+	```bash
+	composer install
+	npm install && npm run build
+	cp .env.example .env
+	php artisan key:generate
+	```
+- Update `.env` with your local database credentials:
+	```
+	DB_CONNECTION=mysql
+	DB_HOST=127.0.0.1
+	DB_PORT=3306
+	DB_DATABASE=your_db_name
+	DB_USERNAME=your_db_user
+	DB_PASSWORD=your_db_password
+	```
+- Create a local MySQL database with the name you set above.
+- Run migrations:
+	```bash
+	php artisan migrate
+	```
+- (Optional) Seed the database:
+	```bash
+	php artisan db:seed
+	```
+- Start the server:
+	```bash
+	php artisan serve
+	```
 
-```bash
-composer create-project laravel/laravel your-project-name
-cd your-project-name
-```
+## 2. Work Distribution & File Responsibilities
 
-## 2. Initialize Git and Connect to New Repo
+### Mitchell & Yvonne – Backend Development
+- **User Authentication:**  
+	Files: `app/Http/Controllers/Auth/`, `resources/views/auth/`, `app/Models/User.php`, `database/migrations/*users*`
+- **Booking Flow:**  
+	Files: `app/Http/Controllers/BookingController.php`, `app/Models/Booking.php`, `database/migrations/*bookings*`, `resources/views/bookings.blade.php`
+- **Payment Integration (Mobile Money):**  
+	Files: `app/Http/Controllers/PaymentController.php`, `app/Models/Payment.php`, `database/migrations/*payments*`, `resources/views/payments.blade.php`
+- **Push:** All backend logic, migrations, and related Blade views.
 
-```bash
-git init
-git remote add origin https://github.com/yourusername/your-new-repo.git
-git branch -M main
-```
+### Mahir & Kisiwani – Frontend Development
+- **UI/UX for Web:**  
+	Files: `resources/views/home.blade.php`, `resources/views/turfs.blade.php`, `resources/views/layouts/`, `public/css/app.css`, `resources/js/app.js`
+- **Search / Listing / Availability Display:**  
+	Files: `app/Http/Controllers/TurfController.php`, `app/Models/Turf.php`, `resources/views/turfs.blade.php`
+- **Push:** All frontend Blade views, CSS, JS, and UI components.
 
-## 3. Install Node Dependencies
+### Lyon – Testing, Database, Deployment
+- **Unit Testing & Usability Testing:**  
+	Files: `tests/Unit/`, `tests/Feature/`, `phpunit.xml`
+- **Database Integration:**  
+	Files: `database/migrations/`, `database/seeders/`, `app/Models/`
+- **Performance & Reliability:**  
+	Files: `config/`, `app/Providers/`
+- **Deployment & Maintenance Plan:**  
+	Files: `README.md` (add deployment steps), `public/.htaccess`, `artisan`, `composer.json`, `package.json`
+- **Push:** All test files, seeders, deployment scripts, and documentation.
 
-```bash
-npm install && npm run build
-```
+## 3. Branching & Commit Messages
 
-## 4. Set Up Environment File
+- Use feature branches named after your task (e.g., `feature/auth-backend`, `feature/ui-frontend`, `feature/testing`).
+- Only push the files you are responsible for (see above).
+- Make regular, meaningful commits with clear messages.
+- After finishing your part, open a pull request for review.
 
-Copy the example environment file and update it:
-```bash
-cp .env.example .env
-```
-Edit `.env` and set your database credentials:
-```
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=your_db_name
-DB_USERNAME=your_db_user
-DB_PASSWORD=your_db_password
-```
+### Example Commit Messages
 
-## 5. Create the Database
+| Team Member         | Example Commit Message                       |
+|---------------------|----------------------------------------------|
+| Mitchell & Yvonne   | "Add user authentication and booking logic"  |
+| Mahir & Kisiwani    | "Implement frontend UI and turf listing"     |
+| Lyon               | "Add unit tests and seeders for database"    |
 
-Create a new MySQL database matching your `.env` settings:
-```sql
-CREATE DATABASE your_db_name;
-```
+## 4. Rubric Coverage Checklist
 
-## 6. Generate Application Key
+## 4. Rubric Coverage Checklist
 
-```bash
-php artisan key:generate
-```
+### 1. Laravel Setup & Configuration (10 pts)
+- **Environment Setup (5):**
+	- Proper Laravel installation: `composer install`, `npm install`, `.env` setup
+	- Application key: `php artisan key:generate`
+	- Local database configuration in `.env`
+- **Dependencies (5):**
+	- All required packages installed via Composer and NPM
+	- Document any extra packages (e.g., Livewire, Spatie, etc.) in `composer.json` and `package.json`
 
-## 7. Add Your Feature Files
+### 2. GitHub Repository & Collaboration (10 pts)
+- **Commit History (4):**
+	- Make regular, atomic commits for each feature or fix
+- **Commit Quality (3):**
+	- Use descriptive commit messages (see table below)
+- **Branch Management (3):**
+	- Use feature branches for each major part (e.g., `feature/auth-backend`)
+	- Open pull requests for review and merging
 
-Each collaborator should add only their assigned files (controllers, models, views, migrations, seeders, tests, etc.) to the new project, commit, and push. This will show individual contributions in the git history.
+### 3. Database Design & Implementation (20 pts)
+- **Migrations (5):**
+	- All tables have proper migration files
+- **Relationships (5):**
+	- Foreign keys and Eloquent relationships defined in models
+- **Seeders (5):**
+	- Database seeded with test data for all tables
+- **Database Design (5):**
+	- Tables normalized, data integrity enforced
 
-## 8. Run Migrations
+### 4. CRUD Operations (15 pts)
+- **Create (4):**
+	- Data insertion forms, validation, and controllers
+- **Read (4):**
+	- Data retrieval, display in Blade views, pagination (use Laravel pagination or Livewire)
+- **Update (4):**
+	- Edit forms, update logic, validation
+- **Delete (3):**
+	- Safe deletion (soft deletes or confirmation)
 
-```bash
-php artisan migrate
-```
+### 5. Core Models & Business Logic (15 pts)
+- **Model Structure (7):**
+	- All models in `app/Models/`, organized and documented
+- **Business Logic (5):**
+	- Application logic in controllers/services
+- **Code Quality (3):**
+	- Readable, commented code
 
-## 9. (Optional) Seed the Database
+### 6. UI/UX Implementation (10 pts)
+- **Design (5):**
+	- Responsive, visually appealing Blade views
+- **User Experience (3):**
+	- Intuitive navigation, clear feedback
+- **Frontend Assets (2):**
+	- CSS/JS organized in `public/` and `resources/`
+	- Use Livewire for dynamic components if needed
 
-If you have seeders, run:
-```bash
-php artisan db:seed
-```
+### 7. Authentication & Authorization (15 pts)
+- **Authentication (6):**
+	- User registration/login using Laravel Auth
+- **Authorization (6):**
+	- Role-based access control using policies and middleware
+	- Example roles: admin, staff, guest (see below)
+	- Use Form Requests and Policies for route/action protection
+- **Security (3):**
+	- Input validation, CSRF protection
 
-## 10. Start the Development Server
+#### Role-Based Authorization Example
+- Roles table: admin, staff, guest
+- Each user belongs to one role
+- Use `php artisan make:model Role -a` to generate model, controller, policy, request, migration, factory, seeder
+- Example Policy:
+	```php
+	class RolePolicy {
+		public function view(User $user) {
+			return $user->role->name === 'admin' || $user->role->name === 'staff';
+		}
+		public function delete(User $user) {
+			return $user->role->name === 'admin';
+		}
+	}
+	```
+- In controllers, use `$this->authorize('delete', $role);`
+- In Blade views:
+	```blade
+	@can('delete', $role)
+	<button>Delete</button>
+	@endcan
+	@cannot('delete', $role)
+	<p>You do not have permission to delete this role.</p>
+	@endcannot
+	```
+- Use Form Requests for validation and authorization
+- Register middleware in `app/Http/Kernel.php` and use in routes:
+	```php
+	Route::middleware('role:admin')->group(function () {
+		Route::resource('roles', RoleController::class);
+	});
+	```
 
-```bash
-php artisan serve
-```
+#### Custom Error Pages
+- Customize error views in `resources/views/errors/`:
+	- 403.blade.php, 404.blade.php, 419.blade.php, 500.blade.php
+- Test with routes:
+	```php
+	Route::get('/test403', function () { abort(403); });
+	Route::get('/test404', function () { abort(404); });
+	```
 
-## 11. Push Your Work
+### 8. Bonus Features (5 pts)
+- Notifications, reviews, support tickets, Livewire components, advanced search, etc.
 
-- Add, commit, and push only your assigned files.
-- Use feature branches for each major part (e.g., `feature/auth-backend`, `feature/ui-frontend`, `feature/testing`).
-- Open a pull request for review and merging.
+## 5. Presentation Prep
+
+- Test your setup and database before demo.
+- Make sure your branch is merged and up-to-date.
+- Be ready to explain your files and contributions.
 
 ---
 
