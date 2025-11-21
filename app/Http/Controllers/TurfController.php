@@ -10,6 +10,15 @@ use App\Models\Location;
 class TurfController extends Controller
 {
     /**
+     * Remove the specified turf from storage.
+     */
+    public function destroy(\App\Models\Turf $turf)
+    {
+        $this->authorize('delete', $turf);
+        $turf->delete();
+        return redirect()->route('turfs')->with('success', 'Turf deleted successfully.');
+    }
+    /**
      * Display a listing of the resource with full filtering & sorting
      */
     public function index()

@@ -17,11 +17,11 @@ class Booking extends Model
 
     public function turf()
     {
-        return $this->belongsTo(Turf::class, 'turfID', 'turfID');
+        return $this->belongsTo(Turf::class, 'turfID', 'id');
     }
 
     public function slot()
     {
-        return $this->belongsTo(TimeSlot::class, 'slotID', 'slotID');
+        return $this->belongsTo(TimeSlot::class, 'slotID', 'id');
     }
 }

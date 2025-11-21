@@ -145,7 +145,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       @forelse($turfs as $turf)
         <div class="group relative bg-white rounded-2xl shadow-md hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300 overflow-hidden">
           <div class="relative h-64 overflow-hidden bg-gray-200">
@@ -205,10 +205,21 @@
                 <span class="text-3xl font-bold text-green-600">KES {{ number_format($turf->pricePerHour) }}</span>
                 <span class="text-gray-500">/hr</span>
               </div>
-              <a href="/bookings/create?turf={{ $turf->id }}"
-                class="bg-green-600 hover:bg-teal-600 hover:scale-105 text-white font-bold py-3 px-6 rounded-xl transition-transform duration-300">
-                Book Now
-              </a>
+              <div class="flex gap-2">
+                <a href="/bookings/create?turf={{ $turf->id }}"
+                  class="bg-green-600 hover:bg-teal-600 hover:scale-105 text-white font-bold py-3 px-6 rounded-xl transition-transform duration-300">
+                  Book Now
+                </a>
+                @can('delete', $turf)
+                  <form method="POST" action="{{ route('turfs.destroy', $turf->id) }}" onsubmit="return confirm('Are you sure you want to delete this turf?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl transition-transform duration-300">
+                      Delete
+                    </button>
+                  </form>
+                @endcan
+              </div>
             </div>
           </div>
         </div>
