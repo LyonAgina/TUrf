@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Turf extends Model
 {
+    protected $fillable = [
+        'name',
+        'description',
+        'pricePerHour',
+        'ownerID',
+        'locationID',
+        'image',
+    ];
     /** @use HasFactory<\Database\Factories\TurfFactory> */
     use HasFactory;
 

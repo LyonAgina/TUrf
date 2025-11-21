@@ -16,11 +16,22 @@ class LocationFactory extends Factory
      */
     public function definition(): array
     {
+        $kenyanCities = [
+            'Nairobi', 'Mombasa', 'Kisumu', 'Eldoret', 'Nakuru', 'Thika', 'Kitale', 'Malindi', 'Garissa', 'Nyeri', 'Machakos', 'Kericho', 'Meru', 'Kakamega', 'Bungoma', 'Naivasha', 'Embu', 'Isiolo', 'Migori', 'Homa Bay'
+        ];
+        $nairobiNeighborhoods = ['Westlands', 'Kilimani', 'Karen', 'Lavington', 'Eastleigh', 'South B', 'Runda', 'Parklands', 'Langata', 'Donholm', 'Buruburu', 'Kasarani', 'Embakasi', 'Muthaiga', 'Syokimau'];
+        $otherNeighborhoods = ['CBD', 'Town Centre', 'Market Area', 'Estate', 'Suburb', 'Industrial Area', 'Beach Road', 'Golf Course', 'Milimani', 'Kondele', 'Railway', 'Airport', 'Hill', 'Plaza', 'Shopping Centre'];
+
+        $city = $this->faker->randomElement($kenyanCities);
+        $neighborhood = $city === 'Nairobi'
+            ? $this->faker->randomElement($nairobiNeighborhoods)
+            : $this->faker->randomElement($otherNeighborhoods);
+
         return [
-            'city' => $this->faker->city,
-            'neighborhood' => $this->faker->streetName,
-            'address' => $this->faker->address,
-            'googleMapsLink' => $this->faker->url,
+            'city' => $city,
+            'neighborhood' => $neighborhood,
+            'address' => $this->faker->buildingNumber . ' ' . $neighborhood . ', ' . $city,
+            'googleMapsLink' => 'https://maps.google.com/?q=' . urlencode($city . ' ' . $neighborhood),
         ];
     }
 }

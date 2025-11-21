@@ -13,25 +13,18 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        if (!$user) {
-            // Optionally redirect to login or show empty bookings
-            return redirect()->route('login');
-        }
-        $userId = property_exists($user, 'userID') ? $user->userID : $user->id;
+        // Show all bookings for demonstration (customize as needed)
         $bookings = \App\Models\Booking::with(['turf', 'slot'])
-            ->where('playerID', $userId)
-            ->orderBy('startTime', 'desc')
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        // Group bookings by status
         $grouped = [
             'upcoming' => $bookings->where('status', 'upcoming'),
             'completed' => $bookings->where('status', 'completed'),
             'cancelled' => $bookings->where('status', 'cancelled'),
         ];
 
-        return view('bookings', [
+        return view('bookings.index', [
             'bookings' => $grouped
         ]);
     }
@@ -41,7 +34,8 @@ class BookingController extends Controller
      */
     public function create()
     {
-        //
+        // Show booking form
+        return view('bookings.create');
     }
 
     /**
@@ -49,7 +43,26 @@ class BookingController extends Controller
      */
     public function store(StoreBookingRequest $request)
     {
-        //
+        // Store booking data
+        $data = $request->validate([
+            'turf_id' => 'required|exists:turfs,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'payment_info' => 'required|string|max:255',
+        ]);
+
+        // Create booking (customize as needed)
+        $booking = new \App\Models\Booking();
+        $booking->turfID = $data['turf_id'];
+        $booking->playerName = $data['name'];
+        $booking->playerEmail = $data['email'];
+        $booking->playerPhone = $data['phone'];
+        $booking->paymentInfo = $data['payment_info'];
+        $booking->status = 'upcoming';
+        $booking->save();
+
+        return redirect()->route('bookings')->with('success', 'Booking successful!');
     }
 
     /**

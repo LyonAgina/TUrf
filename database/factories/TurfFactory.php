@@ -22,6 +22,14 @@ class TurfFactory extends Factory
             'pricePerHour' => $this->faker->randomFloat(2, 500, 5000),
             'ownerID' => \App\Models\User::factory(),
             'locationID' => \App\Models\Location::factory(),
+            'image' => $this->faker->randomElement([
+                'arena1.jpg',
+                'arena2.jpg',
+                'arena3.jpg',
+                'arena4.jpg',
+                'arena5.jpg',
+            ]),
+            'sport' => $this->faker->randomElement(['football', 'futsal', 'basketball']),
         ];
     }
 }
