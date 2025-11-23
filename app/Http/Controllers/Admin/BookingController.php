@@ -5,14 +5,18 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 class BookingController extends Controller {
     public function index(Request $request) {
-        $query = Booking::query();
+        $query = Booking::with(['player', 'turf']);
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function($q) use ($search) {
-                $q->where('user_id', 'like', "%$search%")
-                  ->orWhere('turf_id', 'like', "%$search%")
-                  ->orWhere('date', 'like', "%$search%")
-                  ->orWhere('status', 'like', "%$search%");
+                $q->whereHas('player', function($qq) use ($search) {
+                    $qq->where('name', 'like', "%$search%")
+                       ->orWhere('email', 'like', "%$search%");
+                })
+                ->orWhereHas('turf', function($qq) use ($search) {
+                    $qq->where('name', 'like', "%$search%");
+                })
+                ->orWhere('status', 'like', "%$search%");
             });
         }
         $bookings = $query->get();

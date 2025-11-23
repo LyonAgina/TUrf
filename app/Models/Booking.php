@@ -10,9 +10,10 @@ class Booking extends Model
     /** @use HasFactory<\Database\Factories\BookingFactory> */
     use HasFactory;
 
+
     public function player()
     {
-        return $this->belongsTo(User::class, 'playerID', 'userID');
+        return $this->belongsTo(User::class, 'playerID', 'id');
     }
 
     public function turf()

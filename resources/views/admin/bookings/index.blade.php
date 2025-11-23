@@ -23,14 +23,14 @@
     </form>
     <h2>Bookings</h2>
     <table class="table table-bordered">
-        <thead><tr><th>ID</th><th>User</th><th>Turf</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+        <thead><tr><th>ID</th><th>Player</th><th>Turf</th><th>Start Time</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
         @foreach($bookings as $booking)
             <tr>
                 <td>{{ $booking->id }}</td>
-                <td>{{ $booking->user_id }}</td>
-                <td>{{ $booking->turf_id }}</td>
-                <td>{{ $booking->date ?? $booking->created_at }}</td>
+                <td>{{ $booking->player ? $booking->player->name : $booking->playerID }}</td>
+                <td>{{ $booking->turf ? $booking->turf->name : $booking->turfID }}</td>
+                <td>{{ $booking->startTime }}</td>
                 <td>{{ $booking->status ?? '' }}</td>
                 <td>
                     <a href="{{ route('admin.bookings.edit', $booking) }}" class="btn btn-sm btn-warning">Edit</a>

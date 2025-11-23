@@ -17,12 +17,13 @@
     @endif
     <h2>Payments</h2>
     <table class="table table-bordered">
-        <thead><tr><th>ID</th><th>User</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+        <thead><tr><th>ID</th><th>Player</th><th>Turf</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
         @foreach($payments as $payment)
             <tr>
                 <td>{{ $payment->id }}</td>
-                <td>{{ $payment->user_id }}</td>
+                <td>{{ $payment->booking && $payment->booking->player ? $payment->booking->player->name : '' }}</td>
+                <td>{{ $payment->booking && $payment->booking->turf ? $payment->booking->turf->name : '' }}</td>
                 <td>{{ $payment->amount ?? '' }}</td>
                 <td>{{ $payment->status ?? '' }}</td>
                 <td>
