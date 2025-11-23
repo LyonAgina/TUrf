@@ -1,34 +1,83 @@
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+    @keyframes text-pulse-glow {
+        0%, 100% { filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)); }
+        50% { filter: drop-shadow(0 0 12px rgba(34, 197, 94, 0.7)); }
+    }
+    .nav-glow { transition: text-shadow 0.3s ease; }
+    .group:hover .nav-glow {
+        text-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+    }
+</style>
+
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
-
-                <!-- Custom App Name -->
+                <!-- Custom App Name & Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="/" class="navbar-brand" style="font-size:1.7rem;font-weight:bold;color:#155d27;letter-spacing:1px;">
-                        Turf Bila Worry
+                    <a href="/" class="navbar-brand flex items-center gap-3 group" style="text-decoration: none;">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" 
+                             class="transition-transform duration-300 ease-out group-hover:scale-110 group-hover:-rotate-6"
+                             style="height: 42px; width: auto; filter: drop-shadow(0 4px 3px rgba(0,0,0,0.1));">
+                        <span style="
+                            font-family: 'Russo One', sans-serif; 
+                            font-size: 1.5rem; 
+                            background: linear-gradient(135deg, #022c22 0%, #15803d 50%, #16a34a 100%);
+                            -webkit-background-clip: text; 
+                            -webkit-text-fill-color: transparent; 
+                            animation: text-pulse-glow 3s infinite ease-in-out;
+                            letter-spacing: 0.5px;">
+                            Turf Bila Worry
+                        </span>
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                        Home
-                    </x-nav-link>
-                    <x-nav-link :href="route('turfs')" :active="request()->routeIs('turfs')">
-                        Turfs
-                    </x-nav-link>
-                    <x-nav-link :href="route('bookings')" :active="request()->routeIs('bookings')">
-                        Bookings
-                    </x-nav-link>
-                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
-                        Contact
-                    </x-nav-link>
+                <!-- Cool Animated Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex items-center">
+                    <!-- Home Link -->
+                    <a href="{{ route('home') }}" 
+                       class="group relative px-1 py-2 text-base font-bold tracking-wide transition-colors duration-300
+                              {{ request()->routeIs('home') ? 'text-emerald-700' : 'text-gray-500 hover:text-emerald-600' }}">
+                        <span class="nav-glow relative z-10">Home</span>
+                        <span class="absolute bottom-0 left-0 h-[3px] w-full origin-bottom-right scale-x-0 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-transform duration-300 ease-out group-hover:origin-bottom-left group-hover:scale-x-100 
+                                     {{ request()->routeIs('home') ? 'scale-x-100 origin-bottom-left' : '' }}"></span>
+                    </a>
+                    <!-- Turfs Link -->
+                    <a href="{{ route('turfs') }}" 
+                       class="group relative px-1 py-2 text-base font-bold tracking-wide transition-colors duration-300
+                              {{ request()->routeIs('turfs') ? 'text-emerald-700' : 'text-gray-500 hover:text-emerald-600' }}">
+                        <span class="nav-glow relative z-10">Turfs</span>
+                        <span class="absolute bottom-0 left-0 h-[3px] w-full origin-bottom-right scale-x-0 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-transform duration-300 ease-out group-hover:origin-bottom-left group-hover:scale-x-100
+                                     {{ request()->routeIs('turfs') ? 'scale-x-100 origin-bottom-left' : '' }}"></span>
+                    </a>
+                    <!-- Bookings Link -->
+                    <a href="{{ route('bookings') }}" 
+                       class="group relative px-1 py-2 text-base font-bold tracking-wide transition-colors duration-300
+                              {{ request()->routeIs('bookings') ? 'text-emerald-700' : 'text-gray-500 hover:text-emerald-600' }}">
+                        <span class="nav-glow relative z-10">Bookings</span>
+                        <span class="absolute bottom-0 left-0 h-[3px] w-full origin-bottom-right scale-x-0 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-transform duration-300 ease-out group-hover:origin-bottom-left group-hover:scale-x-100
+                                     {{ request()->routeIs('bookings') ? 'scale-x-100 origin-bottom-left' : '' }}"></span>
+                    </a>
+                    <!-- Contact Link -->
+                    <a href="{{ route('contact') }}" 
+                       class="group relative px-1 py-2 text-base font-bold tracking-wide transition-colors duration-300
+                              {{ request()->routeIs('contact') ? 'text-emerald-700' : 'text-gray-500 hover:text-emerald-600' }}">
+                        <span class="nav-glow relative z-10">Contact</span>
+                        <span class="absolute bottom-0 left-0 h-[3px] w-full origin-bottom-right scale-x-0 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-transform duration-300 ease-out group-hover:origin-bottom-left group-hover:scale-x-100
+                                     {{ request()->routeIs('contact') ? 'scale-x-100 origin-bottom-left' : '' }}"></span>
+                    </a>
+                    <!-- Admin Link (retain) -->
                     @if(Auth::check())
-                        <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
-                            Admin
-                        </x-nav-link>
+                        <a href="{{ route('admin') }}" 
+                           class="group relative px-1 py-2 text-base font-bold tracking-wide transition-colors duration-300
+                                  {{ request()->routeIs('admin') ? 'text-emerald-700' : 'text-gray-500 hover:text-emerald-600' }}">
+                            <span class="nav-glow relative z-10">Admin</span>
+                            <span class="absolute bottom-0 left-0 h-[3px] w-full origin-bottom-right scale-x-0 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-transform duration-300 ease-out group-hover:origin-bottom-left group-hover:scale-x-100
+                                         {{ request()->routeIs('admin') ? 'scale-x-100 origin-bottom-left' : '' }}"></span>
+                        </a>
                     @endif
                 </div>
             </div>

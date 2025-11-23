@@ -1,11 +1,14 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\Turf;
+
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $turfs = \App\Models\Turf::with('location')->latest()->take(6)->get();
-        return view('home', compact('turfs'));
+        // Get distinct sports from turfs table
+        $sports = Turf::select('sport')->distinct()->pluck('sport');
+        return view('home', compact('sports'));
     }
 }
