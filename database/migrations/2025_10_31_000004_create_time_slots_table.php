@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('time_slots', function (Blueprint $table) {
-            $table->id();
+            $table->id('slotID');
             $table->unsignedBigInteger('turfID');
             $table->dateTime('startTime');
             $table->dateTime('endTime');
             $table->string('status');
             $table->timestamps();
-            $table->foreign('turfID')->references('id')->on('turfs')->onDelete('cascade');
+            $table->foreign('turfID')->references('turfID')->on('turfs')->onDelete('cascade');
         });
     }
 

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('status');
             $table->string('transactionCode');
             $table->timestamps();
-            $table->foreign('bookingID')->references('id')->on('bookings')->onDelete('cascade');
+$table->foreign('bookingID')->references('bookingID')->on('bookings')->onDelete('cascade');
         });
     }
 

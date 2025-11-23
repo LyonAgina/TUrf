@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payouts', function (Blueprint $table) {
-            $table->id();
+         Schema::create('payouts', function (Blueprint $table) {
+            $table->id('payoutID');
             $table->unsignedBigInteger('ownerID');
             $table->decimal('amount', 10, 2);
             $table->string('status');
             $table->dateTime('dateProcessed');
             $table->timestamps();
-            $table->foreign('ownerID')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('ownerID')->references('userID')->on('users')->onDelete('cascade');
         });
     }
 

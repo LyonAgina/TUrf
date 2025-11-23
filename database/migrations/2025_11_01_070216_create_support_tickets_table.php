@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('support_tickets', function (Blueprint $table) {
-            $table->id();
+       Schema::create('support_tickets', function (Blueprint $table) {
+            $table->id('ticketID');
             $table->unsignedBigInteger('userID');
             $table->unsignedBigInteger('adminID')->nullable();
             $table->string('subject');
@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('status');
             $table->dateTime('dateCreated');
             $table->timestamps();
-            $table->foreign('userID')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('adminID')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('userID')->references('userID')->on('users')->onDelete('cascade');
+            $table->foreign('adminID')->references('userID')->on('users')->onDelete('set null');
         });
     }
 

@@ -7,39 +7,40 @@ use App\Services\EmailService;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
 use App\Models\Booking;
+use App\Models\Turf; // IMPORTANT: Added for price lookup
+use Illuminate\Http\Request; // <-- NEW: Added to handle URL query parameters
+use Illuminate\Support\Str; // <--- ADD THIS IMPORT
 
 class BookingController extends Controller
 {
     /**
      * Permanently delete a cancelled booking.
      */
-    public function delete(\App\Models\Booking $booking)
+    public function delete($bookingID)
     {
+        $booking = Booking::where('bookingID', $bookingID)->firstOrFail();
         if ($booking->status !== 'cancelled') {
             return redirect()->back()->with('error', 'Only cancelled bookings can be deleted.');
         }
         $booking->delete();
         return redirect()->route('bookings')->with('success', 'Cancelled booking deleted.');
     }
+
     /**
      * Delete the turf from a booking, remove the booking, and refund the user.
      */
-    public function turfDelete(\App\Models\Booking $booking, EmailService $emailService)
+    public function turfDelete($bookingID, EmailService $emailService)
     {
-        // Only allow if booking is upcoming
+        $booking = Booking::where('bookingID', $bookingID)->firstOrFail();
         if ($booking->status !== 'upcoming') {
             return redirect()->back()->with('error', 'Only upcoming bookings can be deleted and refunded.');
         }
         $turf = $booking->turf;
-        // Refund logic (stub)
-        // You would integrate with your payment provider here
-        // For now, just set a refunded flag or message
         $booking->status = 'cancelled';
         $booking->save();
         if ($turf) {
             $turf->delete();
         }
-        // Send refund email to client
         $email = $booking->guestInfo ? json_decode($booking->guestInfo, true)['email'] ?? null : null;
         if (!$email && isset($booking->email)) $email = $booking->email;
         if ($email) {
@@ -52,15 +53,21 @@ class BookingController extends Controller
         $booking->delete();
         return redirect()->route('bookings')->with('success', 'Turf deleted and booking refunded.');
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // Show all bookings for demonstration (customize as needed)
-        $bookings = \App\Models\Booking::with(['turf', 'slot'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // FIX: Filter bookings by the logged-in user
+        $query = Booking::with(['turf', 'slot'])
+            ->orderBy('created_at', 'desc');
+
+        if (auth()->check()) {
+            $query->where('playerID', auth()->user()->userID);
+        }
+        
+        $bookings = $query->get();
 
         $grouped = [
             'upcoming' => $bookings->where('status', 'upcoming'),
@@ -76,36 +83,68 @@ class BookingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+ public function create(Request $request) 
     {
-        // Show booking form
-        return view('bookings.create');
+        $turfs = \App\Models\Turf::all();
+        
+        // 1. Prioritize turf ID from the URL query string
+        $selectedTurfId = $request->query('turfID'); 
+        
+        // 2. Autofill from user's last booking if no query param is set and user is logged in
+        if (is_null($selectedTurfId) && auth()->check()) {
+            
+            // Query the user's latest booking using the latest() scope
+            $lastBooking = Booking::where('playerID', auth()->user()->userID)
+                                  ->latest() // Equivalent to orderBy('created_at', 'desc')
+                                  ->first(); 
+            
+            if ($lastBooking) {
+                // If a booking is found, use its turf ID
+                $selectedTurfId = $lastBooking->turfID;
+            } else {
+                // Explicitly set to null if no booking is found (cleaner for the view)
+                $selectedTurfId = null;
+            }
+        }
+        
+        // Ensure $selectedTurfId is set to null if it was never found (prevents potential issues)
+        $selectedTurfId = $selectedTurfId ?: null;
+        
+        return view('bookings.create', [
+            'turfs' => $turfs,
+            'selectedTurfId' => $selectedTurfId, // <-- Pass the ID to the view
+        ]);
     }
+      
+    
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreBookingRequest $request, EmailService $emailService)
     {
-        // Store booking data
-        $data = $request->validate([
-            'turf_id' => 'required|exists:turfs,id',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'payment_info' => 'required|string|max:255',
-        ]);
+        $data = $request->validated();
 
-        // Create booking (store guest info in JSON column if available, else fallback)
-        $booking = new \App\Models\Booking();
-        $booking->turfID = $data['turf_id'];
-        $booking->playerID = null; // Set to null for guest booking
-        $booking->slotID = 1; // Dummy slot, update with real slot selection
-        $booking->startTime = now();
-        $booking->endTime = now()->addHour();
-        $booking->totalCost = 0; // Set to 0 or calculate based on turf
+        // 1. Fetch the Turf model explicitly using the validated ID
+        $turf = Turf::where('turfID', $data['turfID'])->first();
+        
+        if (!$turf) {
+            return redirect()->back()->with('error', 'Selected turf not found.');
+        }
+
+        $booking = new Booking();
+        $booking->turfID = $data['turfID']; 
+        $booking->playerID = auth()->check() ? auth()->user()->userID : null;
+        $booking->slotID = $data['slot_id'] ?? 1;
+        $booking->startTime = $data['start_time'] ?? now();
+        $booking->endTime = $data['end_time'] ?? now()->addHour();
+        
+        // 2. FINAL FIX: Use the fetched $turf->price and fall back to 0.00 if it's NULL in the database.
+        $booking->totalCost = $turf->price ?? 0.00; 
+        
         $booking->status = 'upcoming';
-        // Store guest info in a JSON column if it exists, else ignore
+
+        // store guest info if not logged-in
         if (Schema::hasColumn('bookings', 'guestInfo')) {
             $booking->guestInfo = json_encode([
                 'name' => $data['name'],
@@ -114,48 +153,18 @@ class BookingController extends Controller
                 'payment_info' => $data['payment_info'],
             ]);
         }
-        $booking->save();
-        // Send booking confirmation email
-        $email = $data['email'] ?? null;
-        if ($email) {
+
+        $booking->save(); 
+
+        // Optional: send confirmation email
+        if ($data['email'] ?? false) {
             $emailService->send(
-                $email,
+                $data['email'],
                 'Booking Confirmation',
-                "Your booking is confirmed! Thank you for choosing TUrf."
+                'Your turf booking has been successfully created.'
             );
         }
-        return redirect()->route('bookings')->with('success', 'Booking successful!');
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Booking $booking)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Booking $booking)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateBookingRequest $request, Booking $booking)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Booking $booking)
-    {
-        //
+        return redirect()->route('bookings')->with('success', 'Booking created!');
     }
 }

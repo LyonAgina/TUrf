@@ -17,7 +17,7 @@ class User extends Authenticatable
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'userID';
     public $incrementing = true;
     protected $keyType = 'int';
 
@@ -30,12 +30,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id',
     ];
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
 
     /**
      * The attributes that should be hidden for serialization.

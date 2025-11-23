@@ -16,13 +16,23 @@ class StoreBookingRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            //
+            // Crucial: This matches $data['turfID'] in your controller
+            'turfID' => 'required|integer|exists:turfs,turfID',
+
+            // These are used in $booking->guestInfo
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'payment_info' => 'required|string',
+
+            // These are optional in your controller logic
+            'slot_id' => 'nullable|integer',
+            'start_time' => 'nullable|date',
+            'end_time' => 'nullable|date|after:start_time',
         ];
     }
 }

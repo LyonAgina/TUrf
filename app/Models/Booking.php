@@ -10,18 +10,36 @@ class Booking extends Model
     /** @use HasFactory<\Database\Factories\BookingFactory> */
     use HasFactory;
 
+    // --- Primary Key Fixes ---
+    protected $primaryKey = 'bookingID';
+    public $incrementing = true; 
+    protected $keyType = 'int'; 
+    // If you use route model binding, include this:
+    public function getRouteKeyName()
+    {
+        return 'bookingID';
+    }
+
+    // --- Relationships ---
     public function player()
     {
-        return $this->belongsTo(User::class, 'playerID', 'userID');
+        return $this->belongsTo(\App\Models\User::class, 'playerID', 'userID');
     }
 
     public function turf()
     {
-        return $this->belongsTo(Turf::class, 'turfID', 'id');
+        return $this->belongsTo(\App\Models\Turf::class, 'turfID', 'turfID');
     }
 
     public function slot()
     {
-        return $this->belongsTo(TimeSlot::class, 'slotID', 'id');
+        return $this->belongsTo(\App\Models\TimeSlot::class, 'slotID', 'slotID');
     }
+
+    // You may also need to define fillable properties if you haven't already
+    /*
+    protected $fillable = [
+        'turfID', 'playerID', 'slotID', 'startTime', 'endTime', 'totalCost', 'status', 'guestInfo'
+    ];
+    */
 }

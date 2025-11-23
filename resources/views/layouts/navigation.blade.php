@@ -1,4 +1,3 @@
-
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
     @keyframes text-pulse-glow {
@@ -16,7 +15,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
-                <!-- Custom App Name & Logo -->
+                <!-- Logo + App Name -->
                 <div class="shrink-0 flex items-center">
                     <a href="/" class="navbar-brand flex items-center gap-3 group" style="text-decoration: none;">
                         <img src="{{ asset('images/logo.png') }}" alt="Logo" 
@@ -35,59 +34,35 @@
                     </a>
                 </div>
 
-                <!-- Cool Animated Navigation Links -->
+                <!-- Desktop Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex items-center">
-                    <!-- Home Link -->
-                    <a href="{{ route('home') }}" 
-                       class="group relative px-1 py-2 text-base font-bold tracking-wide transition-colors duration-300
-                              {{ request()->routeIs('home') ? 'text-emerald-700' : 'text-gray-500 hover:text-emerald-600' }}">
-                        <span class="nav-glow relative z-10">Home</span>
-                        <span class="absolute bottom-0 left-0 h-[3px] w-full origin-bottom-right scale-x-0 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-transform duration-300 ease-out group-hover:origin-bottom-left group-hover:scale-x-100 
-                                     {{ request()->routeIs('home') ? 'scale-x-100 origin-bottom-left' : '' }}"></span>
-                    </a>
-                    <!-- Turfs Link -->
-                    <a href="{{ route('turfs') }}" 
-                       class="group relative px-1 py-2 text-base font-bold tracking-wide transition-colors duration-300
-                              {{ request()->routeIs('turfs') ? 'text-emerald-700' : 'text-gray-500 hover:text-emerald-600' }}">
-                        <span class="nav-glow relative z-10">Turfs</span>
-                        <span class="absolute bottom-0 left-0 h-[3px] w-full origin-bottom-right scale-x-0 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-transform duration-300 ease-out group-hover:origin-bottom-left group-hover:scale-x-100
-                                     {{ request()->routeIs('turfs') ? 'scale-x-100 origin-bottom-left' : '' }}"></span>
-                    </a>
-                    <!-- Bookings Link -->
-                    <a href="{{ route('bookings') }}" 
-                       class="group relative px-1 py-2 text-base font-bold tracking-wide transition-colors duration-300
-                              {{ request()->routeIs('bookings') ? 'text-emerald-700' : 'text-gray-500 hover:text-emerald-600' }}">
-                        <span class="nav-glow relative z-10">Bookings</span>
-                        <span class="absolute bottom-0 left-0 h-[3px] w-full origin-bottom-right scale-x-0 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-transform duration-300 ease-out group-hover:origin-bottom-left group-hover:scale-x-100
-                                     {{ request()->routeIs('bookings') ? 'scale-x-100 origin-bottom-left' : '' }}"></span>
-                    </a>
-                    <!-- Contact Link -->
-                    <a href="{{ route('contact') }}" 
-                       class="group relative px-1 py-2 text-base font-bold tracking-wide transition-colors duration-300
-                              {{ request()->routeIs('contact') ? 'text-emerald-700' : 'text-gray-500 hover:text-emerald-600' }}">
-                        <span class="nav-glow relative z-10">Contact</span>
-                        <span class="absolute bottom-0 left-0 h-[3px] w-full origin-bottom-right scale-x-0 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-transform duration-300 ease-out group-hover:origin-bottom-left group-hover:scale-x-100
-                                     {{ request()->routeIs('contact') ? 'scale-x-100 origin-bottom-left' : '' }}"></span>
-                    </a>
-                    <!-- Admin Link (retain) -->
-                    @if(Auth::check())
-                        <a href="{{ route('admin') }}" 
-                           class="group relative px-1 py-2 text-base font-bold tracking-wide transition-colors duration-300
-                                  {{ request()->routeIs('admin') ? 'text-emerald-700' : 'text-gray-500 hover:text-emerald-600' }}">
-                            <span class="nav-glow relative z-10">Admin</span>
-                            <span class="absolute bottom-0 left-0 h-[3px] w-full origin-bottom-right scale-x-0 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-transform duration-300 ease-out group-hover:origin-bottom-left group-hover:scale-x-100
-                                         {{ request()->routeIs('admin') ? 'scale-x-100 origin-bottom-left' : '' }}"></span>
-                        </a>
-                    @endif
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                        Home
+                    </x-nav-link>
+                    <x-nav-link :href="route('turfs')" :active="request()->routeIs('turfs')">
+                        Turfs
+                    </x-nav-link>
+                    <x-nav-link :href="route('bookings')" :active="request()->routeIs('bookings')">
+                        My Bookings
+                    </x-nav-link>
+                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
+                        Contact
+                    </x-nav-link>
+
+                    @auth
+                        <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                            Admin Panel
+                        </x-nav-link>
+                    @endauth
                 </div>
             </div>
 
-            <!-- User/Guest Actions -->
+            <!-- Right Side: User Menu / Login -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                @if(Auth::check())
+                @auth
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
                                 <div>{{ Auth::user()->name }}</div>
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -96,28 +71,32 @@
                                 </div>
                             </button>
                         </x-slot>
+
                         <x-slot name="content">
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <x-dropdown-link :href="route('logout')"
-                                        onclick="event.preventDefault(); this.closest('form').submit();">
+                                <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
                     </x-dropdown>
                 @else
-                    <a href="{{ route('login') }}" class="btn btn-outline-primary me-2" style="border-radius:24px;padding:6px 22px;font-weight:500;">Login</a>
-                    <a href="{{ route('register') }}" class="btn btn-success" style="background:#1e7e34;border-radius:24px;padding:6px 22px;font-weight:500;">Sign Up</a>
-                @endif
+                    <a href="{{ route('login') }}" class="mx-2 text-sm font-semibold text-gray-700 hover:text-emerald-600 transition">
+                        Login
+                    </a>
+                    <a href="{{ route('register') }}" class="mx-2 px-5 py-2 bg-emerald-600 text-white font-semibold rounded-full hover:bg-emerald-700 transition">
+                        Sign Up
+                    </a>
+                @endauth
             </div>
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -127,36 +106,56 @@
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
+    <!-- Responsive Navigation Menu (Mobile) -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                {{ __('Home') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('turfs')" :active="request()->routeIs('turfs')">
+                {{ __('Turfs') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('bookings')" :active="request()->routeIs('bookings')">
+                {{ __('My Bookings') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
+                {{ __('Contact') }}
+            </x-responsive-nav-link>
+
+            @auth
+                <x-responsive-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                    {{ __('Admin Panel') }}
+                </x-responsive-nav-link>
+            @endauth
         </div>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
+        <!-- Responsive User Menu -->
+        <div class="pt-4 pb-3 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::check() ? Auth::user()->email : '' }}</div>
+                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name ?? 'Guest' }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email ?? '' }}</div>
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                @auth
+                    <x-responsive-nav-link :href="route('profile.edit')">
+                        {{ __('Profile') }}
                     </x-responsive-nav-link>
-                </form>
+
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
+                @else
+                    <x-responsive-nav-link :href="route('login')">
+                        {{ __('Login') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('register')">
+                        {{ __('Sign Up') }}
+                    </x-responsive-nav-link>
+                @endauth
             </div>
         </div>
     </div>

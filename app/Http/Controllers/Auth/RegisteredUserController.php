@@ -45,6 +45,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // FIX: Change 'dashboard' to 'home' (or your desired post-login route name)
+        return redirect(route('home', absolute: false)); 
     }
 }

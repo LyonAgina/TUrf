@@ -15,18 +15,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            UserSeeder::class,
-            TurfSeeder::class,
-            ArenaSeeder::class,
-            LocationSeeder::class,
-            BookingSeeder::class,
-            TimeSlotSeeder::class,
-            PaymentSeeder::class,
-            NotificationSeeder::class,
-            ReviewSeeder::class,
-            PayoutSeeder::class,
-            SupportTicketSeeder::class,
-        ]);
+    $this->call([
+    RoleSeeder::class,
+    UserSeeder::class,
+    TurfSeeder::class,
+    ArenaSeeder::class,
+    LocationSeeder::class,
+    TimeSlotSeeder::class, // <-- before bookings
+    BookingSeeder::class,
+    PaymentSeeder::class,
+    NotificationSeeder::class,
+    ReviewSeeder::class,
+    PayoutSeeder::class,
+    SupportTicketSeeder::class,
+]);
+
+
     }
 }
