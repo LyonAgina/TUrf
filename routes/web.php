@@ -2,6 +2,7 @@
 Route::delete('/bookings/{booking}/delete', [App\Http\Controllers\BookingController::class, 'delete'])->name('bookings.delete');
 Route::delete('/bookings/{booking}/turf-delete', [App\Http\Controllers\BookingController::class, 'turfDelete'])->name('bookings.turfDelete');
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TurfController;
@@ -19,6 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::get('/admin', [AdminController::class, 'index'])->middleware('auth')->name('admin');
 
 Route::get('/turfs', [TurfController::class, 'index'])->name('turfs');
 Route::get('/bookings', [BookingController::class, 'index'])->name('bookings');
@@ -27,4 +29,12 @@ Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.st
 Route::delete('/turfs/{turf}', [App\Http\Controllers\TurfController::class, 'destroy'])->name('turfs.destroy');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('users', App\Http\Controllers\Admin\UserController::class);
+    Route::resource('turfs', App\Http\Controllers\Admin\TurfController::class);
+    Route::resource('bookings', App\Http\Controllers\Admin\BookingController::class);
+    Route::resource('locations', App\Http\Controllers\Admin\LocationController::class);
+    Route::resource('payments', App\Http\Controllers\Admin\PaymentController::class);
+    // Route::resource('time_slots', App\Http\Controllers\Admin\TimeSlotController::class);
+});
 require __DIR__.'/auth.php';

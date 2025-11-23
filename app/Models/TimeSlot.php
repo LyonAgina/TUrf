@@ -10,6 +10,13 @@ class TimeSlot extends Model
     /** @use HasFactory<\Database\Factories\TimeSlotFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'turfID',
+        'startTime',
+        'endTime',
+        'status',
+    ];
+
     public function bookings()
     {
         return $this->hasMany(Booking::class, 'slotID', 'slotID');

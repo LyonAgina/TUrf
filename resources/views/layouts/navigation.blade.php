@@ -25,6 +25,11 @@
                     <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
                         Contact
                     </x-nav-link>
+                    @if(Auth::check())
+                        <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                            Admin
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 

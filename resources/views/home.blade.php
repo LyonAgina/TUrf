@@ -30,14 +30,7 @@
                     <div class="d-flex flex-column gap-2 mt-auto">
                         <a href="/bookings/create?turf={{ $turf->id }}" class="btn btn-success w-100" style="border-radius:20px;">Book Now</a>
                         <a href="/turfs/{{ $turf->id }}" class="btn btn-outline-primary w-100" style="border-radius:20px;">View Details</a>
-                        @auth
-                            <a href="/turfs/{{ $turf->id }}/edit" class="btn btn-outline-warning w-100" style="border-radius:20px;">Edit</a>
-                            <form action="/turfs/{{ $turf->id }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger w-100" style="border-radius:20px;">Delete</button>
-                            </form>
-                        @endauth
+                        {{-- Edit and Delete buttons removed as requested --}}
                     </div>
                 </div>
             </div>
