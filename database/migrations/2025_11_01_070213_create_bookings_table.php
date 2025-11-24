@@ -13,17 +13,14 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('playerID');
-            $table->unsignedBigInteger('turfID');
-            $table->unsignedBigInteger('slotID');
+            $table->foreignId('playerID')->constrained('users')->onDelete('cascade');
+            $table->foreignId('turfID')->constrained('turfs')->onDelete('cascade');
+            $table->foreignId('slotID')->constrained('time_slots')->onDelete('cascade');
             $table->dateTime('startTime');
             $table->dateTime('endTime');
             $table->decimal('totalCost', 10, 2);
             $table->string('status');
             $table->timestamps();
-            $table->foreign('playerID')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('turfID')->references('id')->on('turfs')->onDelete('cascade');
-            $table->foreign('slotID')->references('id')->on('time_slots')->onDelete('cascade');
         });
     }
 

@@ -19,9 +19,9 @@ class BookingFactory extends Factory
         $start = $this->faker->dateTimeBetween('+1 days', '+2 days');
         $end = (clone $start)->modify('+2 hours');
         return [
-            'playerID' => \App\Models\User::factory(),
-            'turfID' => \App\Models\Turf::factory(),
-            'slotID' => 1, // You may want to seed time slots separately
+            'playerID' => \App\Models\User::inRandomOrder()->first()?->id ?? 1,
+            'turfID' => \App\Models\Turf::inRandomOrder()->first()?->id ?? 1,
+            'slotID' => \App\Models\TimeSlot::inRandomOrder()->first()?->id ?? 1,
             'startTime' => $start,
             'endTime' => $end,
             'totalCost' => $this->faker->randomFloat(2, 1000, 10000),

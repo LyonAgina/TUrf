@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->phoneNumber(),
             'password' => static::$password ??= Hash::make('password'),
-            'role' => fake()->randomElement(['Player', 'Owner', 'Admin']),
+            'role_id' => fake()->numberBetween(1, 3), // Random role_id from seeded roles
             'remember_token' => Str::random(10),
         ];
     }
