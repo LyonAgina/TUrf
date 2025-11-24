@@ -50,7 +50,7 @@
                     </x-nav-link>
 
                     @auth
-                        <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                        <x-nav-link :href="route('admin.panel')" :active="request()->routeIs('admin.panel')">
                             Admin Panel
                         </x-nav-link>
                     @endauth
@@ -123,7 +123,7 @@
             </x-responsive-nav-link>
 
             @auth
-                <x-responsive-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                <x-responsive-nav-link :href="route('admin.panel')" :active="request()->routeIs('admin.panel')">
                     {{ __('Admin Panel') }}
                 </x-responsive-nav-link>
             @endauth

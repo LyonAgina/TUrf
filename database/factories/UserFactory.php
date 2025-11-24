@@ -29,6 +29,10 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            
+            // DEFAULT ROLE: Set to Player unless explicitly overridden by a state/seeder
+            'role' => 'Player', 
+            // Note: If your migration includes 'phone', add it here too: 'phone' => fake()->phoneNumber(),
         ];
     }
 
@@ -39,6 +43,28 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+    
+    // --- NEW ROLE STATES ---
+
+    /**
+     * Indicate that the user has an 'Admin' role.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'Admin',
+        ]);
+    }
+
+    /**
+     * Indicate that the user has an 'Owner' role.
+     */
+    public function owner(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'Owner',
         ]);
     }
 }

@@ -8,10 +8,10 @@
     $userEmail = auth()->check() ? auth()->user()->email : old('email');
     $userPhone = old('phone');
 
-    // Determine which turf to show (priority: URL → first available)
+    // Determine which turf to show (priority: URL query 'turfID' → first available)
     $turf = null;
-    if (request()->filled('turf')) {
-        $turf = $turfs->firstWhere('turfID', request('turf'));
+    if (request()->filled('turfID')) {
+        $turf = $turfs->firstWhere('turfID', request('turfID'));
     }
     $turf = $turf ?? $turfs->first();
 @endphp
@@ -51,12 +51,11 @@
 
                             <a href="{{ route('turfs') }}"
                                class="whitespace-nowrap bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-md text-sm font-semibold transition">
-                                Change
+                                Change Turf
                             </a>
                         </div>
 
                         <input type="hidden" name="turfID" value="{{ $turf->turfID }}">
-
                     @else
                         <div class="text-red-600 font-medium">
                             No turf available. Please contact admin.

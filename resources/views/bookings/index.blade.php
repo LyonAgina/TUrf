@@ -77,34 +77,49 @@
             </script>
             {{-- List bookings here --}}
             <div class="w-full pb-4">
+                @php
+                    $allBookings = array_merge($bookings['upcoming']->all(), $bookings['completed']->all(), $bookings['cancelled']->all());
+                @endphp
+                @if(count($allBookings) === 0)
+                    <div class="flex flex-col items-center justify-center py-20 bg-gradient-to-b from-green-50 to-white rounded-2xl shadow-lg border-2 border-green-300">
+                        <div class="mb-6 relative">
+                            <div class="absolute -top-6 left-1/2 -translate-x-1/2">
+                                <svg class="w-16 h-16 text-green-400 drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 48 48">
+                                    <circle cx="24" cy="24" r="22" stroke-width="4" stroke="#22c55e" fill="#e6ffe6"/>
+                                    <path d="M12 32c0-8 24-8 24 0" stroke="#22c55e" stroke-width="3" fill="none"/>
+                                    <ellipse cx="24" cy="20" rx="8" ry="6" fill="#22c55e"/>
+                                </svg>
+                            </div>
+                            <img src="{{ asset('images/arena1.jpg') }}" alt="No bookings" class="w-32 h-32 object-cover rounded-full shadow-xl border-4 border-green-400">
+                        </div>
+                        <h3 class="text-3xl font-extrabold text-green-700 mb-2 tracking-tight">No Bookings Yet</h3>
+                        <p class="text-lg text-gray-700 mb-4 max-w-md text-center">You haven't booked any turfs yet.<br>Discover lush green fields and premium courts for your next game!</p>
+                        <a href="{{ route('turfs') }}" class="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white px-7 py-3 rounded-xl font-bold shadow-lg transition-all duration-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                            Browse Turfs
+                        </a>
+                        <div class="mt-8 text-green-500 text-sm font-semibold animate-pulse">Ready to play? Book your favorite turf now!</div>
+                    </div>
+                @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    @foreach(array_merge($bookings['upcoming']->all(), $bookings['completed']->all(), $bookings['cancelled']->all()) as $booking)
-                        
+                    @foreach($allBookings as $booking)
                         @php
-                            // --- Image Source Logic ---
                             $turfImage = $booking->turf->image ?? null;
-                            $defaultImage = asset('images/arena1.jpg'); // Fallback to a local default
+                            $defaultImage = asset('images/arena1.jpg');
                             $imageSource = $defaultImage;
-
                             if ($turfImage) {
-                                // Use the most reliable check for external URLs (starts with http/https)
                                 if (str_starts_with($turfImage, 'http')) {
                                     $imageSource = $turfImage;
                                 } else {
-                                    // Assume it is a local storage path
                                     $imageSource = asset('storage/' . $turfImage);
                                 }
                             }
                         @endphp
-
-                        <div class="bg-white rounded-2xl shadow-md hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300 overflow-hidden">
-                            <div class="relative h-32 overflow-hidden rounded-t-2xl bg-gray-200">
-                                
-                                {{-- IMAGE DISPLAY --}}
-                                <img src="{{ $imageSource }}" 
-                                     alt="{{ $booking->turf ? $booking->turf->name : 'Turf' }}" 
-                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                
+                        <div class="bg-white rounded-2xl shadow-md hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300 overflow-hidden border-2 border-green-200">
+                            <div class="relative h-32 overflow-hidden rounded-t-2xl bg-green-100">
+                                <img src="{{ $imageSource }}"
+                                     alt="{{ $booking->turf ? $booking->turf->name : 'Turf' }}"
+                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 border-b-4 border-green-400">
                                 @if($booking->status === 'upcoming')
                                     <span class="absolute top-2 left-2 bg-green-600 text-white text-xs px-3 py-1 rounded-full font-bold shadow">Upcoming</span>
                                 @elseif($booking->status === 'completed')
@@ -114,7 +129,18 @@
                                 @endif
                             </div>
                             <div class="p-4">
-                                <h3 class="text-base font-bold text-gray-800 mb-2">{{ $booking->turf ? $booking->turf->name : 'N/A' }}</h3>
+                                <h3 class="text-base font-bold text-green-800 mb-2">{{ $booking->turf ? $booking->turf->name : 'N/A' }}</h3>
+                                @if($booking->turf)
+                                    <div class="text-gray-700 mb-1">
+                                        <span class="font-semibold">Sport:</span> <span class="bg-green-100 px-2 py-1 rounded">{{ ucfirst($booking->turf->sport) }}</span>
+                                    </div>
+                                    <div class="text-gray-700 mb-1">
+                                        <span class="font-semibold">Price/Hour:</span> <span class="bg-green-100 px-2 py-1 rounded">Ksh {{ number_format($booking->turf->pricePerHour, 2) }}</span>
+                                    </div>
+                                    <div class="text-gray-700 mb-1">
+                                        <a href="{{ route('turfs') }}#turf-{{ $booking->turf->turfID }}" class="text-green-700 hover:underline font-semibold">View Turf Details</a>
+                                    </div>
+                                @endif
                                 <div class="text-gray-700 mb-2">
                                     <span class="font-semibold">Date:</span> <span class="bg-gray-100 px-2 py-1 rounded">{{ $booking->startTime }}</span>
                                 </div>
@@ -140,6 +166,8 @@
                             </div>
                         </div>
                     @endforeach
+                </div>
+                @endif
                 </div>
             </div>
             <style>

@@ -12,38 +12,32 @@ use Illuminate\Support\Facades\Route;
 // Home - Default route
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Remove or redirect dashboard (optional - cleaner)
-Route::redirect('/dashboard', '/', 301)->middleware(['auth', 'verified']);
+// Remove dashboard route (no redirect)
+# Route::redirect('/dashboard', '/', 301)->middleware(['auth', 'verified']); // <-- removed
 
-// Public routes (Turf list remains public)
+// Public routes
 Route::get('/turfs', [TurfController::class, 'index'])->name('turfs');
-
-// Public route (Booking list remains public, though filtered in controller)
 Route::get('/bookings', [BookingController::class, 'index'])->name('bookings');
-
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 // Booking Routes restricted by 'auth' middleware
 Route::middleware('auth')->group(function () {
-    // These actions require the user to be logged in:
     Route::get('/bookings/create', [BookingController::class, 'create'])->name('bookings.create');
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
-    
-    // Deletion/Modification routes also require authentication
     Route::delete('/bookings/{booking}/delete', [BookingController::class, 'delete'])->name('bookings.delete');
     Route::delete('/bookings/{booking}/turf-delete', [BookingController::class, 'turfDelete'])->name('bookings.turfDelete');
     Route::delete('/turfs/{turf}', [TurfController::class, 'destroy'])->name('turfs.destroy');
 
-    // Profile and Admin authenticated routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+
+    // Admin panel route for login redirect
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.panel');
 });
 
-// Admin routes (Already correctly secured with 'auth')
+// Admin resource routes
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', App\Http\Controllers\Admin\UserController::class);
     Route::resource('turfs', App\Http\Controllers\Admin\TurfController::class);
