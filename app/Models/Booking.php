@@ -36,10 +36,7 @@ class Booking extends Model
         return $this->belongsTo(\App\Models\TimeSlot::class, 'slotID', 'slotID');
     }
 
-    // You may also need to define fillable properties if you haven't already
-    /*
     protected $fillable = [
-        'turfID', 'playerID', 'slotID', 'startTime', 'endTime', 'totalCost', 'status', 'guestInfo'
+        'playerID', 'turfID', 'date', 'slotID', 'startTime', 'endTime', 'totalCost', 'status', 'guestInfo'
     ];
-    */
 }

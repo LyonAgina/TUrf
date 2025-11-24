@@ -2,7 +2,7 @@
 @section('title', 'Manage Users')
 @section('content')
 <div class="container py-4">
-    <a href="{{ route('admin') }}" class="btn btn-secondary mb-3">&larr; Back to Admin Management</a>
+    <a href="{{ route('admin.panel') }}" class="btn btn-secondary mb-3">&larr; Back to Admin Management</a>
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -28,7 +28,7 @@
         <tbody>
         @foreach($users as $user)
             <tr>
-                <td>{{ $user->id }}</td>
+                <td>{{ $user->userID }}</td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->role }}</td>
@@ -43,5 +43,8 @@
         @endforeach
         </tbody>
     </table>
+    <div class="mt-4">
+        {{ $users->appends(request()->query())->links('pagination::bootstrap-4') }}
+    </div>
 </div>
 @endsection

@@ -2,7 +2,7 @@
 @section('title', 'Manage Payments')
 @section('content')
 <div class="container py-4">
-    <a href="{{ route('admin') }}" class="btn btn-secondary mb-3">&larr; Back to Admin Management</a>
+    <a href="{{ route('admin.panel') }}" class="btn btn-secondary mb-3">&larr; Back to Admin Management</a>
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -15,6 +15,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+    <form method="GET" action="{{ route('admin.payments.index') }}" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search payments..." value="{{ request('search') }}">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+    </form>
     <h2>Payments</h2>
     <table class="table table-bordered">
         <thead><tr><th>ID</th><th>User</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
@@ -22,7 +28,7 @@
         @foreach($payments as $payment)
             <tr>
                 <td>{{ $payment->id }}</td>
-                <td>{{ $payment->user_id }}</td>
+                <td>{{ $payment->booking?->player?->name ?? 'Unknown' }}</td>
                 <td>{{ $payment->amount ?? '' }}</td>
                 <td>{{ $payment->status ?? '' }}</td>
                 <td>
@@ -36,5 +42,8 @@
         @endforeach
         </tbody>
     </table>
+    <div class="mt-4">
+        {{ $payments->appends(request()->query())->links('pagination::bootstrap-4') }}
+    </div>
 </div>
 @endsection

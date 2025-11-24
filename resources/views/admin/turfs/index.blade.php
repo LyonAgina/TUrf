@@ -2,7 +2,7 @@
 @section('title', 'Manage Turfs')
 @section('content')
 <div class="container py-4">
-    <a href="{{ route('admin') }}" class="btn btn-secondary mb-3">&larr; Back to Admin Management</a>
+    <a href="{{ route('admin.panel') }}" class="btn btn-secondary mb-3">&larr; Back to Admin Management</a>
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -24,12 +24,19 @@
     <h2>Turfs</h2>
     <a href="{{ route('admin.turfs.create') }}" class="btn btn-primary mb-2">Add Turf</a>
     <table class="table table-bordered">
-        <thead><tr><th>ID</th><th>Name</th><th>Price/hr</th><th>Actions</th></tr></thead>
+        <thead><tr><th>ID</th><th>Name</th><th>Image</th><th>Price/hr</th><th>Actions</th></tr></thead>
         <tbody>
         @foreach($turfs as $turf)
             <tr>
-                <td>{{ $turf->id }}</td>
+                <td>{{ $turf->turfID }}</td>
                 <td>{{ $turf->name }}</td>
+                <td>
+                    @if($turf->image)
+                        <img src="{{ asset('storage/' . $turf->image) }}" alt="Turf Image" style="max-width:80px; max-height:80px;">
+                    @else
+                        <span class="text-muted">No image</span>
+                    @endif
+                </td>
                 <td>{{ $turf->pricePerHour }}</td>
                 <td>
                     <a href="{{ route('admin.turfs.edit', $turf) }}" class="btn btn-sm btn-warning">Edit</a>
@@ -42,5 +49,8 @@
         @endforeach
         </tbody>
     </table>
+    <div class="mt-4">
+        {{ $turfs->appends(request()->query())->links('pagination::bootstrap-4') }}
+    </div>
 </div>
 @endsection

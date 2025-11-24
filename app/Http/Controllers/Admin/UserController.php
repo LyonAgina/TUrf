@@ -14,7 +14,7 @@ class UserController extends Controller {
                   ->orWhere('role', 'like', "%$search%");
             });
         }
-        $users = $query->get();
+        $users = $query->paginate(10);
         return view('admin.users.index', compact('users'));
     }
     public function create() { return view('admin.users.create'); }
@@ -34,7 +34,7 @@ class UserController extends Controller {
     public function update(Request $request, User $user) {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|email|unique:users,email,' . $user->userID . ',userID',
             'role' => 'required|string',
         ]);
         $user->update($validated);

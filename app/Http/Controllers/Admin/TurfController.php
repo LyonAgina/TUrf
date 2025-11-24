@@ -13,15 +13,23 @@ class TurfController extends Controller {
                   ->orWhere('pricePerHour', 'like', "%$search%");
             });
         }
-        $turfs = $query->get();
+        $turfs = $query->paginate(10);
         return view('admin.turfs.index', compact('turfs'));
     }
-    public function create() { return view('admin.turfs.create'); }
+    public function create() {
+        $locations = \App\Models\Location::all();
+        return view('admin.turfs.create', compact('locations'));
+    }
     public function store(Request $request) {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'pricePerHour' => 'required|numeric',
+            'pricePerHour' => 'required|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('turfs', 'public');
+            $validated['image'] = $imagePath;
+        }
         Turf::create($validated);
         return redirect()->route('admin.turfs.index')->with('success', 'Turf created successfully.');
     }
@@ -30,8 +38,13 @@ class TurfController extends Controller {
     public function update(Request $request, Turf $turf) {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'pricePerHour' => 'required|numeric',
+            'pricePerHour' => 'required|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('turfs', 'public');
+            $validated['image'] = $imagePath;
+        }
         $turf->update($validated);
         return redirect()->route('admin.turfs.index')->with('success', 'Turf updated successfully.');
     }

@@ -2,7 +2,7 @@
 @section('title', 'Add User')
 @section('content')
 <div class="container py-4">
-    <a href="{{ route('admin') }}" class="btn btn-secondary mb-3">&larr; Back to Admin Management</a>
+    <a href="{{ route('admin.panel') }}" class="btn btn-secondary mb-3">&larr; Back to Admin Management</a>
     <h2>Add User</h2>
     <form action="{{ route('admin.users.store') }}" method="POST">
         @csrf

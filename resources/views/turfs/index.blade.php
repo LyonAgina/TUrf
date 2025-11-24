@@ -122,22 +122,25 @@
 
 
 
-{{-- In resources/views/turfs/index.blade.php (around line 108) --}}
-
 <img src="{{ 
-    // 1. Check if the image field has a valid URL starting with http/https
-    (Str::startsWith($turf->image ?? '', ['http', 'https']) 
-        ? $turf->image 
-        // 2. Fallback to local storage if it doesn't start with http/https
-        : ($turf->image ? asset('storage/'.$turf->image) : null))
-    // 3. Final Fallback: If still empty, use Unsplash with specific keywords
-    ?? 'https://source.unsplash.com/random/1200x800/?' . 
-       ($turf->sport ? $turf->sport . ' ' : '') . 
-       'field,pitch,court,sport,arena&sig=' . $turf->turfID 
+    // 1. Check if the 'image' column has any data
+    $turf->image 
+        ? 
+        // 2. If data exists, check if it's an external URL (http/https)
+        (Str::startsWith($turf->image, 'http') 
+            ? $turf->image 
+            // 3. If not an external URL, assume local storage
+            : asset('storage/'.$turf->image)) 
+        : 
+        // 4. Fallback: If 'image' column is empty, generate a specific Unsplash URL
+        'https://source.unsplash.com/random/1200x800/?' . 
+        ($turf->sport ? $turf->sport . ' ' : '') . 
+        'turf,field,pitch,sport,kenya&sig=' . $turf->turfID . rand(1,999999) 
     }}"
     alt="{{ $turf->name }} - {{ ucfirst($turf->sport ?? 'turf') }} in Kenya"
     class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
     loading="lazy">
+                       
 
                     </div>
 
