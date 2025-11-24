@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Schema;
-use App\Services\EmailService;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
 use App\Models\Booking;
@@ -24,7 +23,7 @@ class BookingController extends Controller
     /**
      * Delete the turf from a booking, remove the booking, and refund the user.
      */
-    public function turfDelete(\App\Models\Booking $booking, EmailService $emailService)
+    public function turfDelete(\App\Models\Booking $booking)
     {
         // Only allow if booking is upcoming
         if ($booking->status !== 'upcoming') {
@@ -38,16 +37,6 @@ class BookingController extends Controller
         $booking->save();
         if ($turf) {
             $turf->delete();
-        }
-        // Send refund email to client
-        $email = $booking->guestInfo ? json_decode($booking->guestInfo, true)['email'] ?? null : null;
-        if (!$email && isset($booking->email)) $email = $booking->email;
-        if ($email) {
-            $emailService->send(
-                $email,
-                'Refund Processed',
-                "Your refund is being processed. If you do not receive it within 48 hours, please call us at 0712345678."
-            );
         }
         $booking->delete();
         return redirect()->route('bookings')->with('success', 'Turf deleted and booking refunded.');
@@ -85,7 +74,7 @@ class BookingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBookingRequest $request, EmailService $emailService)
+    public function store(StoreBookingRequest $request)
     {
         // Store booking data
         $data = $request->validate([
@@ -115,15 +104,7 @@ class BookingController extends Controller
             ]);
         }
         $booking->save();
-        // Send booking confirmation email
-        $email = $data['email'] ?? null;
-        if ($email) {
-            $emailService->send(
-                $email,
-                'Booking Confirmation',
-                "Your booking is confirmed! Thank you for choosing TUrf."
-            );
-        }
+
         return redirect()->route('bookings')->with('success', 'Booking successful!');
     }
 
